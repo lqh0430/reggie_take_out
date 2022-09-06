@@ -14,6 +14,8 @@ import com.ithema.reggie.service.SetmealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +49,10 @@ public class SetmealController {
      * 保存套餐
      * @param setmealDto 封装了套餐 和套餐菜品
      * @return
+     * @CacheEvict(value = "setmealCache",allEntries = true) 新增套餐时,也要清除缓存;保证数据一致性
      */
     @PostMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> saveWithDish(@RequestBody SetmealDto setmealDto) {
         log.info("套餐信息={}",setmealDto);
         setmealService.saveWithDish(setmealDto);
@@ -109,8 +113,10 @@ public class SetmealController {
      * 删除套餐
      * @param ids
      * @return
+     * @CacheEvict(value = "setmealCache",allEntries = true) 清除setmealCache缓存
      */
     @DeleteMapping
+    @CacheEvict(value = "setmealCache",allEntries = true)
     public R<String> delete(@RequestParam("ids") List<Long> ids) {
         log.info("ids:{}",ids);
 
@@ -188,8 +194,10 @@ public class SetmealController {
      * 根据条件查询套餐
      * @param setmeal 封装的对象
      * @return 套餐集合
+     * @Cacheable 如果缓存中有该数据,则直接返回缓存中的数据,如果没有,则继续执行程序去数据库中查询
      */
     @GetMapping("/list")
+    @Cacheable(value = "setmealCache", key = "#setmeal.categoryId + '_' + #setmeal.status")
     public R<List<Setmeal>> list(Setmeal setmeal) {
         log.info("套餐信息={}",setmeal);
         //根据前端传递过来的categoryId和status查询
