@@ -1,0 +1,15 @@
+package com.ithema.reggie.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ithema.reggie.entity.Employee;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * @version 1.0
+ * @Author LQH02
+ * @Description
+ * @CreateDate 2022/8/28 18:34
+ */
+@Mapper
+public interface EmployeeMapper extends BaseMapper<Employee> {
+}

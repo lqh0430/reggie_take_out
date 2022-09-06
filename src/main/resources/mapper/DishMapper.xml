@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace与mapper接口的全类名保持一致 namespace根据工程修改全限定名称-->
+<mapper namespace="com.ithema.reggie.mapper.DishMapper">
+
+    <!--使用insert,update,delete,select标签写sql -->
+
+    <resultMap id="selectDishAndCategoryNameMap" type="com.ithema.reggie.entity.Dish">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="categoryId" column="category_id"/>
+        <result property="price" column="price"/>
+        <result property="code" column="code"/>
+        <result property="image" column="image"/>
+        <result property="status" column="status"/>
+        <result property="sort" column="sort"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="createUser" column="create_user"/>
+        <result property="updateUser" column="update_user"/>
+
+        <!--多对一(菜品多 分类一)
+            在映射时如果两表字段相同,属性值就会被覆盖,则查询时需要 别名
+        -->
+        <association property="category" javaType="com.ithema.reggie.entity.Category">
+            <id property="id" column="categoryId"/>
+            <result property="type" column="type"/>
+            <result property="name" column="categoryName"/>
+            <result property="sort" column="sort"/>
+            <result property="createTime" column="create_time"/>
+            <result property="updateTime" column="update_time"/>
+            <result property="createUser" column="create_user"/>
+            <result property="updateUser" column="update_user"/>
+        </association>
+    </resultMap>
+    <select id="selectDishAndCategoryName" resultMap="selectDishAndCategoryNameMap">
+        SELECT d.*,c.`id` as categoryId,c.`name` as categoryName
+        FROM `dish` d LEFT JOIN `category` c
+        ON d.category_id = c.id
+    </select>
+    <!--<select id="selectDishAndCategoryName" resultType="com.ithema.reggie.entity.Dish">
+        SELECT d.*,c.`name`
+        FROM `dish` d LEFT JOIN `category` c
+        ON d.category_id = c.id
+    </select>-->
+</mapper>
