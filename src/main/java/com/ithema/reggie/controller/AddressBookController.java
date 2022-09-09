@@ -7,6 +7,8 @@ import com.ithema.reggie.common.BaseContext;
 import com.ithema.reggie.common.R;
 import com.ithema.reggie.entity.AddressBook;
 import com.ithema.reggie.service.AddressBookService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.CollectionUtils;
@@ -20,6 +22,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/addressBook")
+@Api(tags = "地址薄接口")
 public class AddressBookController {
 
     @Autowired
@@ -29,6 +32,7 @@ public class AddressBookController {
      * 新增
      */
     @PostMapping
+    @ApiOperation(value = "新增地址接口")
     public R<AddressBook> save(@RequestBody AddressBook addressBook) {
         addressBook.setUserId(BaseContext.getCurrentId());
         log.info("addressBook:{}", addressBook);
@@ -40,6 +44,7 @@ public class AddressBookController {
      * 设置默认地址
      */
     @PutMapping("default")
+    @ApiOperation("设置默认地址接口")
     public R<AddressBook> setDefault(@RequestBody AddressBook addressBook) {
         log.info("addressBook:{}", addressBook);
         LambdaUpdateWrapper<AddressBook> wrapper = new LambdaUpdateWrapper<>();
@@ -58,6 +63,7 @@ public class AddressBookController {
      * 根据id查询地址
      */
     @GetMapping("/{id}")
+    @ApiOperation(value = "根据id查询地址接口")
     public R get(@PathVariable Long id) {
         AddressBook addressBook = addressBookService.getById(id);
         if (addressBook != null) {
@@ -71,6 +77,7 @@ public class AddressBookController {
      * 查询默认地址
      */
     @GetMapping("default")
+    @ApiOperation(value = "默认地址查询接口")
     public R<AddressBook> getDefault() {
         LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
         queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
@@ -90,6 +97,7 @@ public class AddressBookController {
      * 查询指定用户的全部地址
      */
     @GetMapping("/list")
+    @ApiOperation(value = "指定用户的全部地址查询接口")
     public R<List<AddressBook>> list(AddressBook addressBook) {
         addressBook.setUserId(BaseContext.getCurrentId());
         log.info("addressBook:{}", addressBook);
@@ -109,6 +117,7 @@ public class AddressBookController {
      * @return
      */
     @DeleteMapping
+    @ApiOperation(value = "删除地址接口")
     public R<String> delete(@RequestParam("ids") Long ids) {
         log.info("地址id={}",ids);
         LambdaQueryWrapper<AddressBook> addressBookLambdaQueryWrapper = new LambdaQueryWrapper<>();
@@ -124,6 +133,7 @@ public class AddressBookController {
      * @return
      */
     @PutMapping
+    @ApiOperation(value = "修改地址接口")
     public R<String> update(@RequestBody AddressBook addressBook) {
         log.info("修改地址信息={}",addressBook);
         if (addressBook == null) {

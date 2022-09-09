@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ithema.reggie.common.R;
 import com.ithema.reggie.entity.Employee;
 import com.ithema.reggie.service.EmployeeService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.util.DigestUtils;
@@ -24,6 +26,7 @@ import java.time.LocalDateTime;
 @Slf4j
 @RestController
 @RequestMapping("/employee")
+@Api(tags = "员工接口")
 public class EmployeeController {
 
     @Resource
@@ -36,6 +39,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/login")
+    @ApiOperation(value = "员工登录接口")
     public R<Employee> login(@RequestBody Employee employee, HttpServletRequest request) {
 
         //1.将页面提交的密码password进行md5加密处理
@@ -74,6 +78,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping("/logout")
+    @ApiOperation(value = "员工退出接口")
     public R<String> logout(HttpServletRequest request) {
         request.getSession().removeAttribute("employee");
         return R.success("退出成功");
@@ -86,6 +91,7 @@ public class EmployeeController {
      * @return
      */
     @PostMapping
+    @ApiOperation(value = "保存员工接口")
     public R save(@RequestBody Employee employee,HttpServletRequest request) {
         log.info("新增员工信息: {}",employee.toString());
         //给员工设置初始密码123456
@@ -114,6 +120,7 @@ public class EmployeeController {
      * @return
      */
     @GetMapping("/page")
+    @ApiOperation("员工带条件分页查询接口")
     public R<Page> page(@RequestParam("page") Integer page,
                         @RequestParam("pageSize") Integer pageSize,
                         String name) {
@@ -140,6 +147,7 @@ public class EmployeeController {
      * @return R<String> 前端只需要判断一下code 所以用string
      */
     @PutMapping
+    @ApiOperation(value = "编辑/禁用/修改接口")
     public R<String> update(@RequestBody Employee employee,HttpServletRequest request) {
         log.info("employee{}",employee);
 
@@ -159,11 +167,12 @@ public class EmployeeController {
     }
 
     /**
-     * 根据id修改员工信息
+     * 根据id获取员工信息
      * @param id
      * @return
      */
     @GetMapping("/{id}")
+    @ApiOperation(value = "根据id查询员工接口")
     public R<Employee> getById(@PathVariable("id") String id) {
         log.info("修改员工的id={}",id);
         Employee employee = employeeService.getById(id);

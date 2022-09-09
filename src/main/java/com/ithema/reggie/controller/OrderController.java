@@ -8,6 +8,8 @@ import com.ithema.reggie.dto.OrdersDto;
 import com.ithema.reggie.entity.OrderDetail;
 import com.ithema.reggie.entity.Orders;
 import com.ithema.reggie.service.OrdersService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.omg.PortableInterceptor.INACTIVE;
@@ -27,6 +29,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @RequestMapping("/order")
+@Api(tags = "订单接口")
 public class OrderController {
 
     @Resource
@@ -38,6 +41,7 @@ public class OrderController {
      * @return
      */
     @PostMapping("/submit")
+    @ApiOperation(value = "生成订单接口")
     public R<String> submit(@RequestBody Orders orders) {
         log.info("订单信息={}",orders);
         ordersService.submit(orders);
@@ -54,6 +58,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/page")
+    @ApiOperation(value = "后台（日期条件+订单号）查询 + 分页接口")
     public R<Page> page(@RequestParam("page") Integer page,
                             @RequestParam("pageSize") Integer pageSize,
                             String number,
@@ -81,6 +86,7 @@ public class OrderController {
      * @return
      */
     @GetMapping("/userPage")
+    @ApiOperation(value = "前台订单分页查询接口")
     public R<Page> userPage(@RequestParam("page") Integer page,
                             @RequestParam("pageSize") Integer pageSize) {
         log.info("查询订单分页信息={} {}",page,pageSize);

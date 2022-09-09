@@ -1,6 +1,8 @@
 package com.ithema.reggie.controller;
 
 import com.ithema.reggie.common.R;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ import java.util.UUID;
 @RestController
 @Slf4j
 @RequestMapping("/common")
+@Api(tags = "通用接口")
 public class CommonController {
 
 
@@ -37,6 +40,7 @@ public class CommonController {
      * @return
      */
     @PostMapping("/upload")
+    @ApiOperation(value = "文件上传接口")
     public R<String> upload(@RequestPart("file")MultipartFile file) throws IOException {
         log.info("上传的文件名={}",file.getName());
 
@@ -67,6 +71,7 @@ public class CommonController {
      * @param response
      */
     @GetMapping("/download")
+    @ApiOperation(value = "文件下载接口")
     public void download(String name,HttpServletResponse response) {
         log.info("上传过后要下载的文件名={}",name);
 

@@ -5,6 +5,8 @@ import com.ithema.reggie.common.BaseContext;
 import com.ithema.reggie.common.R;
 import com.ithema.reggie.entity.ShoppingCart;
 import com.ithema.reggie.service.ShoppingCartService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/shoppingCart")
+@Api(tags = "购物车接口")
 public class ShoppingCartController {
 
     @Resource
@@ -32,6 +35,7 @@ public class ShoppingCartController {
      * @return
      */
     @PostMapping("/add")
+    @ApiOperation(value = "添加购物车接口")
     public R<ShoppingCart> save(@RequestBody ShoppingCart shoppingCart) {
         log.info("购物车={}",shoppingCart);
 
@@ -78,6 +82,7 @@ public class ShoppingCartController {
      * @return
      */
     @GetMapping("/list")
+    @ApiOperation(value = "查看购物车接口")
     public R<List<ShoppingCart>> list() {
         log.info("查看购物车...");
         //获取当前用户id
@@ -96,6 +101,7 @@ public class ShoppingCartController {
      * @return
      */
     @DeleteMapping("/clean")
+    @ApiOperation(value = "清空购物车接口")
     public R<String> clean() {
         //获取当前用户id
         Long currentId = BaseContext.getCurrentId();

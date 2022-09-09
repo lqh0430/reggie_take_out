@@ -5,6 +5,8 @@ import com.ithema.reggie.common.R;
 import com.ithema.reggie.entity.User;
 import com.ithema.reggie.service.UserService;
 import com.ithema.reggie.utils.ValidateCodeUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -28,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @Slf4j
 @RequestMapping("/user")
+@Api(tags = "用户接口")
 public class UserController {
 
     @Resource
@@ -37,6 +40,7 @@ public class UserController {
     private RedisTemplate redisTemplate;
 
     @PostMapping("/sendMsg")
+    @ApiOperation(value = "QQ邮箱发送接口")
     public R<String> sendMsg(HttpSession session, @RequestBody User user) {
         //获取邮箱号(前端邮箱绑定的字段是phone)
         String email = user.getPhone();
@@ -63,8 +67,8 @@ public class UserController {
 
     //登录
     @PostMapping("/login")
-    //Map存JSON数据
-    public R<User> login(HttpSession session,@RequestBody Map map){
+    @ApiOperation(value = "用户登录接口")
+    public R<User> login(HttpSession session,@RequestBody Map map){    //Map存JSON数据
         //获取邮箱，用户输入的
         String phone = map.get("phone").toString();
         //获取验证码，用户输入的
@@ -108,6 +112,7 @@ public class UserController {
      * @return
      */
     @PostMapping("/loginout")
+    @ApiOperation(value = "用户退出接口")
     public R<String> loginout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
         return R.success("退出成功");

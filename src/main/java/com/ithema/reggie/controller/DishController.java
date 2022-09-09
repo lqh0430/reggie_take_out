@@ -10,6 +10,9 @@ import com.ithema.reggie.entity.DishFlavor;
 import com.ithema.reggie.service.CategoryService;
 import com.ithema.reggie.service.DishFlavorService;
 import com.ithema.reggie.service.DishService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 @RestController
 @Slf4j
 @RequestMapping("/dish")
+@Api(tags = "菜品接口")
 public class DishController {
 
     @Resource
@@ -50,6 +54,7 @@ public class DishController {
      * @return
      */
     @PostMapping
+    @ApiOperation(value = "保存菜品接口")
     public R<String> save(@RequestBody DishDto dishDto) {
         log.info("保存【菜品】DishDto封装的属性信息={}",dishDto);
 
@@ -73,6 +78,7 @@ public class DishController {
      * @return
      */
     @GetMapping("/page")
+    @ApiOperation(value = "菜品带条件分页查询接口")
     public R<Page> page(@RequestParam("page") Integer page,
                         @RequestParam("pageSize") Integer pageSize,
                         String name) {
@@ -133,6 +139,7 @@ public class DishController {
      * @return
      */
     @GetMapping("/{id}")
+    @ApiOperation(value = "根据id查询【菜品信息】和【菜品口味】接口")
     public R<DishDto> get(@PathVariable("id") Long id) {
         DishDto dishDto = dishService.getByIdWithFlavor(id);
 
@@ -145,6 +152,7 @@ public class DishController {
      * @return
      */
     @PutMapping
+    @ApiOperation(value = "修改菜品接口")
     public R<String> update(@RequestBody DishDto dishDto) {
         dishService.updateWithFlavor(dishDto);
 
@@ -187,6 +195,7 @@ public class DishController {
      * @return
      */
     @PostMapping("/status/{status}")
+    @ApiOperation(value = "批量起售/停售菜品接口")
     public R<String> saleStopBatch(@PathVariable("status") Integer status,
                                    @RequestParam("ids") List<Long> ids) {
         log.info("批量停售的菜品状态={} 菜品id={}", status, ids);
@@ -210,6 +219,7 @@ public class DishController {
      * @return
      */
     @DeleteMapping
+    @ApiOperation(value = "批量删除菜品接口")
     public R<String> delete(@RequestParam("ids") List<Long> ids) {
         log.info("批量删除的菜品id={}",ids);
         //删除菜品(逻辑删除)
@@ -243,6 +253,7 @@ public class DishController {
      * @return
      */
     @GetMapping("/list")
+    @ApiOperation(value = "菜品分类查询接口")
     public R<List<DishDto>> list(Dish dish) {
         log.info("菜品分类查询哪些菜品={}",dish);
 

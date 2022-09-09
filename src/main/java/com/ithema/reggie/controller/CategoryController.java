@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ithema.reggie.common.R;
 import com.ithema.reggie.entity.Category;
 import com.ithema.reggie.service.CategoryService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/category")
+@Api(tags = "分类接口")
 public class CategoryController {
 
     @Resource
@@ -34,6 +37,7 @@ public class CategoryController {
      * @return
      */
     @PostMapping
+    @ApiOperation(value = "新增分类接口")
     public R<String> save(@RequestBody Category category) {
         log.info("菜品={}",category);
         categoryService.save(category);
@@ -47,6 +51,7 @@ public class CategoryController {
      * @return
      */
     @GetMapping("/page")
+    @ApiOperation(value = "分类分页查询接口")
     public R<Page> page(@RequestParam("page") Integer page,
                         @RequestParam("pageSize") Integer pageSize) {
         log.info("page={} pageSize={}",page,pageSize);
@@ -67,6 +72,7 @@ public class CategoryController {
      * @return
      */
     @DeleteMapping
+    @ApiOperation(value = "删除分类接口")
     public R<String> delete(Long ids) {
         log.info("要删除菜品的id={}",ids);
         /*categoryService.removeById(ids);*/
@@ -81,6 +87,7 @@ public class CategoryController {
      * @return
      */
     @PutMapping
+    @ApiOperation(value = "修改菜品接口")
     public R<String> update(@RequestBody Category category) {
         log.info("要修改的菜品的信息={}",category);
 
@@ -97,6 +104,7 @@ public class CategoryController {
      * @return 返回【菜品分类】 集合
      */
     @GetMapping("/list")
+    @ApiOperation(value = "菜品分类查询接口")
     public R<List<Category>> list(Category category) {
         //条件构造器
         LambdaQueryWrapper<Category> lambdaQueryWrapper = new LambdaQueryWrapper<>();
