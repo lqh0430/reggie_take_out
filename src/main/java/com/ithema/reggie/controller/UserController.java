@@ -111,7 +111,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @PostMapping("/loginout")
+    @PostMapping("/logout")
     @ApiOperation(value = "用户退出接口")
     public R<String> loginout(HttpServletRequest request) {
         request.getSession().removeAttribute("user");
